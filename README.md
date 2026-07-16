@@ -1,102 +1,50 @@
-# AdGuardHome ARMv5 Container (MikroTik hEX / Legacy Routers)
+# AdGuardHome for ARMv5
 
-**AdGuardHome container image for ARMv5 devices**, designed specifically for legacy routers such as:
+Container image for running [AdGuardHome](https://github.com/AdguardTeam/AdGuardHome) on ARMv5 devices.
 
-✅ MikroTik hEX (EN7562CT CPU)
+Official AdGuardHome images don't support ARMv5, so devices like the **MikroTik hEX** (and other ARMv5-only routers) can't run them. This repo provides a working build.
 
-✅ Other ARMv5-only container environments
+## Usage
 
-Official AdGuardHome images do **not support ARMv5**, which prevents them from running on certain MikroTik devices.
-This repository solves that limitation by providing a working, lightweight container build.
+Image is hosted on GitHub Container Registry.
 
----
-
-## ✨ Features
-
-- ARMv5 compatible container image
-- Based on official AdGuardHome release binaries
-- Published on GitHub Container Registry (GHCR)
-
----
-
-## 📦 Container Image
-
-The prebuilt image is available on **GitHub Container Registry (GHCR)**:
-
-Set your MikroTik container registry to:
-
+**Registry URL:**
 ```
 https://ghcr.io
 ```
 
-Then pull the image from:
-
+**Image:**
 ```
 raw-network/adguardhome-armv5:latest
 ```
 
----
+After the container starts, open the setup wizard at `http://<container-ip>:3000`.
 
-## 🌐 Default Web Interface
+## Ports
 
-After starting the container, the AdGuardHome setup interface will be available at:
+| Port | Protocol | Service |
+|------|----------|---------|
+| 53 | TCP/UDP | DNS |
+| 67/68 | UDP | DHCP |
+| 80 | TCP | HTTP |
+| 443 | TCP | HTTPS |
+| 853 | TCP/UDP | DNS-over-TLS |
+| 784 | UDP | DNS-over-QUIC |
+| 8853 | UDP | DNS-over-QUIC (alt) |
+| 5443 | TCP/UDP | DNSCrypt |
+| 3000 | TCP | Setup UI |
 
-```
-http://<container-ip>:3000
-```
+## How It Works
 
-Follow the setup wizard to complete the configuration.
+- CI checks for new AdGuardHome releases daily
+- If a new version is found, it builds an ARMv5 image using the official binary
+- The image is pushed to GHCR with both `latest` and version tags
 
----
+## Credits
 
-## 🔌 Exposed Ports
+AdGuardHome is developed by [AdGuard Team](https://github.com/AdguardTeam/AdGuardHome).
+This repo only handles container packaging for ARMv5.
 
-| Port | Protocol | Description |
-|------|----------|-------------|
-| 53   | TCP/UDP  | DNS |
-| 67/68| UDP      | DHCP |
-| 80   | TCP      | HTTP |
-| 443  | TCP      | HTTPS |
-| 853  | TCP/UDP  | DNS-over-TLS |
-| 784  | UDP      | DNS-over-QUIC |
-| 8853 | UDP      | DNS-over-QUIC (Alt) |
-| 5443 | TCP/UDP  | DNSCrypt |
-| 3000 | TCP      | Initial Setup UI |
-
----
-
-## 📚 Upstream Project & Credits
-
-This repository packages the official **AdGuardHome** software.
-
-AdGuardHome is developed by:
-
-AdGuard Team  
-https://github.com/AdguardTeam/AdGuardHome  
-
-License:  
-https://github.com/AdguardTeam/AdGuardHome/blob/master/LICENSE.txt  
-
-All credit for the DNS server itself belongs to the AdGuard developers.
-
----
-
-## ⚠️ Disclaimer
-
-This project only provides container packaging for ARMv5 environments.
-
-It is:
-
-- Not affiliated with AdGuard
-- Not an official AdGuard build
-- Provided without warranty
-
----
-
-## ⭐ Support
-
-If you find this project useful:
-
-- Star the repository
+Not affiliated with or endorsed by AdGuard. Provided as-is, without warranty.
 - Report issues
 - Contribute improvements
