@@ -28,8 +28,8 @@ FROM arm32v5/debian:bookworm-slim
 LABEL maintainer="RAW-Network" \
       description="AdGuardHome Docker image optimized for ARMv5 (legacy devices)"
 
-ENV DEBIAN_FRONTEND=noninteractive \
-    TZ=UTC \
+ARG DEBIAN_FRONTEND=noninteractive
+ENV TZ=UTC \
     LANG=en_US.UTF-8 
 
 # Install critical runtime dependencies
