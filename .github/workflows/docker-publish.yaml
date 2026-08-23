@@ -16,6 +16,7 @@ jobs:
     outputs:
       has_update: ${{ steps.compare.outputs.HAS_UPDATE }}
       repo_lower: ${{ steps.repo.outputs.REPO_LOWER }}
+      upstream_version: ${{ steps.upstream.outputs.VERSION }}
 
     steps:
       - name: Set lowercase repository name
@@ -47,7 +48,7 @@ jobs:
 
   build-and-push:
     needs: check-update
-    if: needs.check-update.outputs.has_update == 'true' || github.event_name == 'push' || github.event_name == 'workflow_dispatch'
+    if: needs.check-update.outputs.has_update == 'true'
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -93,7 +94,7 @@ jobs:
       - name: Push to GHCR
         run: |
           REPO="ghcr.io/${{ needs.check-update.outputs.repo_lower }}"
-          VERSION="${{ steps.version.outputs.AGH_VERSION }}"
+          VERSION="${{ needs.check-update.outputs.upstream_version }}"
           docker tag agh:local "$REPO:latest"
           docker tag agh:local "$REPO:$VERSION"
           docker push "$REPO:latest"
@@ -102,6 +103,5 @@ jobs:
       - name: Summary
         run: |
           echo "### Build Complete" >> "$GITHUB_STEP_SUMMARY"
-          echo "- Version: ${{ steps.version.outputs.AGH_VERSION }}" >> "$GITHUB_STEP_SUMMARY"
-          echo "- Image: ghcr.io/${{ needs.check-update.outputs.repo_lower }}" >> "$GITHUB_STEP_SUMMARY"
-          echo "- Image: ghcr.io/${{ needs.check-update.outputs.repo_lower }}" >> "$GITHUB_STEP_SUMMARY"
+          echo "- Version: ${{ needs.check-update.outputs.upstream_version }}" >> "$GITHUB_STEP_SUMMARY"
+          echo "- Image: ghcr.io/${{ needs.check-update.outputs.repo_lower }}:${{ needs.check-update.outputs.upstream_version }}" >> "$GITHUB_STEP_SUMMARY"

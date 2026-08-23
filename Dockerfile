@@ -46,7 +46,8 @@ COPY --from=builder /tmp/build/AdGuardHome/AdGuardHome .
 
 # Setup directories and permissions
 RUN mkdir -p work conf && \
-    chmod +x ./AdGuardHome
+    chmod +x ./AdGuardHome && \
+    chmod 0700 work
 
 # Expose Ports
 # DNS (53), DHCP (67/68), HTTP/S (80/443), DoT/DoQ (853), DoQ-Alt (784/8853), DNSCrypt (5443), Setup (3000)
